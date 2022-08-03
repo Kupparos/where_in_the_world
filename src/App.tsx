@@ -7,6 +7,7 @@ import {
   ColorScheme,
 } from "@mantine/core";
 import { HeaderAction } from "./components/HeaderAction";
+import Home from "./pages/Home";
 
 function App() {
   const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
@@ -25,7 +26,9 @@ function App() {
       >
         <HeaderAction />
         <div className="app">
-          <div className="container">body</div>
+          <div className="container">
+            <Home/>
+          </div>
         </div>
       </MantineProvider>
     </ColorSchemeProvider>
