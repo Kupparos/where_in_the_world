@@ -1,20 +1,13 @@
 import React from "react";
-import {
-  Card,
-  Image,
-  Text,
-  Badge,
-  Group,
-  Center,
-  Avatar,
-  createStyles,
-} from "@mantine/core";
-import { useCountries } from "../hooks/useCountries";
+import { Card, Image, Text, createStyles, Group } from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   card: {
     position: "relative",
-    width: 300,
+    width: "100%",
+    padding: "0px",
+    maxWidth: "420px",
+    height: "350px",
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     "&:hover": {
@@ -22,50 +15,78 @@ const useStyles = createStyles((theme) => ({
       transform: "scale(1.02)",
     },
   },
-
+  image: {
+    borderBottom: "1px solid",
+    borderBlockColor:
+      theme.colorScheme === "dark"
+        ? theme.colors.gray[5]
+        : theme.colors.gray[1],
+  },
   title: {
     display: "block",
     marginTop: theme.spacing.md,
-    marginBottom: theme.spacing.xs / 2,
+    marginBottom: theme.spacing.xs,
+  },
+  textGroup: {
+    gap: 6,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  text: {
+    fontWeight: 500,
+    color:
+      theme.colorScheme === "dark"
+        ? theme.colors.gray[5]
+        : theme.colors.dark[7],
   },
 }));
 
 interface CardProps {
   image: string;
-  link: string;
   title: string;
-  description: string;
+  population: number;
+  capital: string[];
+  region: string;
 }
 
 export default function CountryCard({
-  className,
   image,
-  link,
   title,
-  description,
+  population,
+  capital,
+  region,
 }: CardProps & Omit<React.ComponentPropsWithoutRef<"div">, keyof CardProps>) {
-  const { classes, cx, theme } = useStyles();
-  const country = useCountries();
-
-  const linkProps = {
-    href: link,
-    target: "_blank",
-    rel: "noopener noreferrer",
-  };
+  const { classes } = useStyles();
 
   return (
-    <Card withBorder radius="md" className={cx(classes.card, className)}>
-      <a {...linkProps}>
-        <Image src={image} height={180} />
-        
-        <Text className={classes.title} weight={500}>
-          {title}
-        </Text>
-
+    <Card withBorder radius="md" className={classes.card}>
+      <Card.Section className={classes.image}>
+        <Image src={image} height={180} alt="flag" fit="fill" />
+      </Card.Section>
+      <Text className={classes.title} weight={500} fz="lg">
+        {title}
+      </Text>
+      <Group className={classes.textGroup}>
         <Text size="sm" color="dimmed" lineClamp={4}>
-          {description}
+          <Text span className={classes.text}>
+            Population:
+          </Text>{" "}
+          {population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         </Text>
-      </a>
+        <Text size="sm" color="dimmed" lineClamp={4}>
+          <Text span className={classes.text}>
+            Region:
+          </Text>{" "}
+          {region}
+        </Text>
+        <Text size="sm" color="dimmed" lineClamp={4}>
+          <Text span className={classes.text}>
+            Capital:
+          </Text>{" "}
+          {capital ? capital.join(", ") : '-'}
+        </Text>
+      </Group>
     </Card>
   );
 }

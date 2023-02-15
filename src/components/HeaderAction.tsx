@@ -12,9 +12,13 @@ import {
 import { upperFirst } from "@mantine/hooks";
 import { Moon, Sun } from "tabler-icons-react";
 
-const HEADER_HEIGHT = 75;
+const HEADER_HEIGHT = '9vh';
 
 const useStyles = createStyles((theme) => ({
+  header: {
+    borderBottom: "3px solid",
+    borderBottomColor: theme.colorScheme === "dark" ? "#2C2E33" : "#f1f2f4",
+  },
   inner: {
     height: HEADER_HEIGHT,
     display: "flex",
@@ -23,8 +27,8 @@ const useStyles = createStyles((theme) => ({
     padding: "0 4vw",
   },
   title: {
-    fontWeight: 'bold',
-    fontSize: '1.3rem',
+    fontWeight: "bold",
+    fontSize: "1.3rem",
   },
   control: {
     backgroundColor:
@@ -59,7 +63,7 @@ export function HeaderAction() {
   const Icon = colorScheme === "dark" ? Sun : Moon;
 
   return (
-    <Header height={HEADER_HEIGHT}>
+    <Header height={HEADER_HEIGHT} className={classes.header}>
       <Container className={classes.inner} fluid>
         <Group className={classes.title}>Where in the world?</Group>
         <UnstyledButton
@@ -71,7 +75,7 @@ export function HeaderAction() {
             <Icon size={18} />
           </Center>
           <Text size="sm">
-            {upperFirst(colorScheme === "light" ? "dark" : "light")} mode
+            {upperFirst(colorScheme === "light" ? "dark" : "light")} {"mode"}
           </Text>
         </UnstyledButton>
       </Container>

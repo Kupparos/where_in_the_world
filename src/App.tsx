@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { useState } from "react";
 import {
   MantineProvider,
@@ -7,12 +6,24 @@ import {
   ColorScheme,
 } from "@mantine/core";
 import { HeaderAction } from "./components/HeaderAction";
-import Home from "./pages/Home";
+import { QueryClient, QueryClientProvider } from "react-query";
+import AppContainer from "./pages/AppContainer";
 
 function App() {
   const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        retry: false,
+        staleTime: 5*60*1000,
+      },
+    },
+  });
 
   return (
     <ColorSchemeProvider
@@ -25,11 +36,9 @@ function App() {
         withNormalizeCSS
       >
         <HeaderAction />
-        <div className="app">
-          <div className="container">
-            <Home/>
-          </div>
-        </div>
+        <QueryClientProvider client={queryClient}>
+          <AppContainer />
+        </QueryClientProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );
